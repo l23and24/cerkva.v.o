@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Намірення на літургію</title>
+    <!-- Використання Tailwind для легкої адаптивності -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Анімований фон, що плавно переливається */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px; /* Мінімальні відступи для мобільних */
+            background: linear-gradient(-45deg, #F8D7CA, #FCE4EC, #FFF3E0, #F3E5F5);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Контейнер з ефектом розмиття (Glassmorphism) */
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            display: grid;
+            grid-template-columns: 1fr; /* По замовчуванню одна колонка (мобільні) */
+            gap: 2rem;
+            align-items: start;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Планшети та ноутбуки: перехід у дві колонки */
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1.5fr;
+                padding: 3rem;
+                gap: 3rem;
+            }
+        }
+
+        /* QR блок */
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .qr-frame {
+            background: white;
+            padding: 15px;
+            border: 2px solid #20128C;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(32, 18, 140, 0.1);
+            max-width: 100%; /* Щоб не виходив за межі екрану */
+        }
+
+        .qr-image {
+            width: 100%;
+            max-width: 250px; /* Максимальний розмір на ПК */
+            height: auto;
+            aspect-ratio: 1/1;
+            object-fit: contain;
+        }
+
+        /* Стрічка з текстом */
+        .ribbon {
+            background-color: #20128C;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: -15px;
+            z-index: 2;
+            position: relative;
+            clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+            width: 90%;
+            max-width: 280px;
+            text-align: center;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .header-text {
+            color: #20128C;
+            font-weight: 900;
+            font-size: clamp(1.4rem, 5vw, 2rem); /* Адаптивний шрифт */
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .highlight-text {
+            color: #E91E63;
+        }
+
+        /* Поля форми */
+        .label-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: #20128C;
+            font-size: 1rem;
+        }
+
+        /* Окремий блок для пожертви на храм */
+        .donation-block {
+            background: rgba(233, 30, 99, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid #E91E63;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .donation-block:active {
+            transform: scale(0.98);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            accent-color: #20128C;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            border: 1px solid rgba(32, 18, 140, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            font-family: inherit;
+            resize: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            background-color: #20128C;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 20px rgba(32, 18, 140, 0.2);
+        }
+
+        .submit-btn:hover {
+            background-color: #150a63;
+        }
+
+        /* Реквізити */
+        .bank-details {
+            margin-top: 2rem;
+            padding: 15px;
+            background: rgba(32, 18, 140, 0.04);
+            border-radius: 12px;
+            border: 1px dashed rgba(32, 18, 140, 0.3);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .bank-details h3 {
+            color: #20128C;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ЛІВА ЧАСТИНА: QR ТА АДРЕСА -->
+        <div class="qr-section">
+            <div class="qr-frame">
+                <!-- ВСТАВТЕ ПОСИЛАННЯ НА QR НИЖЧЕ -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://example.com" 
+                     alt="QR Код для оплати" 
+                     class="qr-image">
+            </div>
+            <div class="ribbon">
+                Намірення на літургію
+            </div>
+
+            <!-- Адреса храму -->
+            <div class="mt-6 text-center text-sm text-[#20128C] bg-white/30 p-4 rounded-xl w-full">
+                <p class="font-bold uppercase tracking-wider mb-1">Адреса храму</p>
+                <p>вул. Церковна, 1, м. Ваше Місто</p>
+            </div>
+        </div>
+
+        <!-- ПРАВА ЧАСТИНА: ФОРМА -->
+        <div class="form-section">
+            <h1 class="header-text">
+                Для пожертв на літургію<br class="hidden md:block"> 
+                відскануйте QR код або<br class="hidden md:block"> 
+                скористайтесь 
+                <a href="#" class="highlight-text underline decoration-2 underline-offset-4">посиланням</a>
+            </h1>
+
+            <form action="#" method="POST">
+                
+                <!-- Окрема опція для пожертви на храм -->
+                <div class="donation-block">
+                    <label class="radio-item text-lg">
+                        <input type="checkbox" name="church_donation" value="yes">
+                        <span class="font-bold text-[#20128C]">Пожертва на храм</span>
+                    </label>
+                </div>
+
+                <!-- Вибір типу літургії -->
+                <div class="form-group">
+                    <label class="label-title">Намірення на всяке прошення <span class="text-red-600">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="type" value="dead" required>
+                            <span>За померлих</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="type" value="health">
+                            <span>За здоров'я</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="type" value="thanks">
+                            <span>За подяку</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Текстове намірення -->
+                <div class="form-group">
+                    <label for="intent" class="label-title">Намірення (імена) <span class="text-red-600">*</span></label>
+                    <textarea id="intent" name="intent" placeholder="Напишіть імена для молитви..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Відправити намірення</button>
+
+                <!-- Банківські дані -->
+                <div class="bank-details">
+                    <h3>🏦 Реквізити для переказу:</h3>
+                    <div class="space-y-1">
+                        <p><strong>Отримувач:</strong>РО ПАРАФІЯ СВЯТИХ ВОЛОДИМИРА І ОЛЬГИ</p>
+                        <p class="break-all"><strong>IBAN:</strong> UA133052990000026005005515996 </p>
+                        <p><strong>Код отримувача: 23803925 </strong> 12345678</p>
+                        <p><strong>Призначення:</strong> Благодійна пожертва</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
