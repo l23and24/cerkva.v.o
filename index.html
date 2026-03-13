@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Намірення на літургію</title>
-    <!-- Використання Tailwind для легкої адаптивності -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Анімований фон */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -61,36 +59,32 @@
 
         .qr-frame {
             background: white;
-            padding: 15px;
+            padding: 10px;
             border: 2px solid #20128C;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(32, 18, 140, 0.1);
-            max-width: 100%;
+            max-width: 180px; /* Зменшили розмір для мобільних */
         }
 
         .qr-image {
             width: 100%;
-            max-width: 250px;
             height: auto;
             aspect-ratio: 1/1;
-            object-fit: contain;
         }
 
         .ribbon {
             background-color: #20128C;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 15px;
             font-weight: bold;
             text-transform: uppercase;
-            margin-top: -15px;
+            margin-top: -10px;
             z-index: 2;
             position: relative;
             clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
-            width: 90%;
-            max-width: 280px;
+            width: 200px;
             text-align: center;
-            font-size: 0.8rem;
-            letter-spacing: 0.5px;
+            font-size: 0.7rem;
         }
 
         .header-text {
@@ -100,18 +94,6 @@
             line-height: 1.2;
             margin-bottom: 1.5rem;
             text-align: center;
-        }
-
-        .highlight-text {
-            color: #E91E63;
-        }
-
-        .label-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            display: block;
-            color: #20128C;
-            font-size: 1rem;
         }
 
         .donation-block {
@@ -137,7 +119,6 @@
             gap: 12px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.95rem;
         }
 
         input[type="radio"], input[type="checkbox"] {
@@ -148,26 +129,29 @@
 
         textarea {
             width: 100%;
-            height: 120px;
+            height: 100px;
             border: 1px solid rgba(32, 18, 140, 0.2);
             border-radius: 12px;
             padding: 12px;
-            font-family: inherit;
-            resize: none;
             background: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
         }
 
         .submit-btn {
             background-color: #20128C;
             color: white;
             border: none;
-            padding: 16px;
+            padding: 18px;
             border-radius: 14px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
             font-size: 1.1rem;
+            box-shadow: 0 8px 20px rgba(32, 18, 140, 0.3);
+            transition: all 0.2s;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.96);
         }
 
         .bank-details {
@@ -178,90 +162,129 @@
             border: 1px dashed rgba(32, 18, 140, 0.3);
             font-size: 0.85rem;
         }
+        
+        /* Модальне вікно успіху */
+        #successModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- ЛІВА ЧАСТИНА: QR ТА АДРЕСА -->
+        <!-- ЛІВА ЧАСТИНА -->
         <div class="qr-section">
+            <p class="text-xs text-[#20128C] mb-3 opacity-70 hidden md:block text-center">Для оплати з комп'ютера:</p>
             <div class="qr-frame">
-                <!-- ТУТ МИ МІНЯЄМО ЗОБРАЖЕННЯ НА ВАШ ПЛАКАТ -->
-                <!-- Вставте пряме посилання на зображення вашого плаката замість адреси нижче -->
-                <img src="https://drive.google.com/file/d/1GUjXregIAyeEC0yMGAy5LHrPdHIN1yLh/view?usp=drive_link" 
+                <!-- Посилання на QR-код або генерація -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://privatbank.ua" 
                      alt="QR Код" 
                      class="qr-image">
             </div>
-            <div class="ribbon">
-                Намірення на літургію
-            </div>
+            <div class="ribbon">Намірення на літургію</div>
 
-            <!-- Адреса храму -->
-            <div class="mt-6 text-center text-sm text-[#20128C] bg-white/30 p-4 rounded-xl w-full">
-                <p class="font-bold uppercase tracking-wider mb-1">Адреса храму</p>
-                <!-- ЗАМІНІТЬ АДРЕСУ НИЖЧЕ -->
-                <p>вул. Церковна, 1, м. Івано-Франківськ</p>
+            <div class="mt-6 text-center text-xs text-[#20128C] bg-white/30 p-3 rounded-xl w-full">
+                <p class="font-bold uppercase mb-1">вул.Вовчинецька, 223 </p>
+                <p>вул.Вовчинецька, 223, Ivano-Frankivsk, Ukraine</p>
             </div>
         </div>
 
-        <!-- ПРАВА ЧАСТИНА: ФОРМА -->
+        <!-- ПРАВА ЧАСТИНА -->
         <div class="form-section">
             <h1 class="header-text">
-                Для пожертв на літургію<br class="hidden md:block"> 
-                відскануйте QR код або<br class="hidden md:block"> 
-                скористайтесь 
-                <!-- ЗАМІНІТЬ # НА ВАШЕ ПОСИЛАННЯ ДЛЯ ОПЛАТИ -->
-                <a href="https://privatbank.ua" class="highlight-text underline decoration-2 underline-offset-4">посиланням</a>
+                Подати намірення на молитву
             </h1>
 
-            <form action="#" method="POST">
-                
+            <form id="liturgyForm">
                 <div class="donation-block">
                     <label class="radio-item text-lg">
-                        <input type="checkbox" name="church_donation" value="yes">
+                        <input type="checkbox" name="church_donation" id="church_donation">
                         <span class="font-bold text-[#20128C]">Пожертва на храм</span>
                     </label>
                 </div>
 
-                <div class="form-group">
-                    <label class="label-title">Намірення на всяке прошення <span class="text-red-600">*</span></label>
+                <div class="form-group mb-4">
+                    <label class="label-title">Оберіть тип прошення <span class="text-red-600">*</span></label>
                     <div class="radio-group">
                         <label class="radio-item">
-                            <input type="radio" name="type" value="dead" required>
+                            <input type="radio" name="type" value="За померлих" required>
                             <span>За померлих</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="type" value="health">
+                            <input type="radio" name="type" value="За здоров'я">
                             <span>За здоров'я</span>
                         </label>
                         <label class="radio-item">
-                            <input type="radio" name="type" value="thanks">
+                            <input type="radio" name="type" value="За подяку">
                             <span>За подяку</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-6">
                     <label for="intent" class="label-title">Намірення (імена) <span class="text-red-600">*</span></label>
-                    <textarea id="intent" name="intent" placeholder="Напишіть імена для молитви..." required></textarea>
+                    <textarea id="intent" name="intent" placeholder="Напишіть імена..." required></textarea>
                 </div>
 
-                <button type="submit" class="submit-btn">Відправити намірення</button>
+                <!-- ГОЛОВНА КНОПКА -->
+                <button type="submit" class="submit-btn">
+                    ПІДТВЕРДИТИ ТА ПЕРЕЙТИ ДО ОПЛАТИ
+                </button>
 
-                <!-- Банківські дані -->
-                <div class="bank-details">
-                    <h3 class="font-bold mb-2">🏦 Реквізити для переказу:</h3>
-                    <div class="space-y-1">
-                        <!-- ЗАМІНІТЬ ДАНІ НИЖЧЕ НА ВАШІ РЕАЛЬНІ РЕКВІЗИТИ -->
-                        <p><strong>Отримувач:</strong> Релігійна громада Храму...</p>
-                        <p class="break-all"><strong>IBAN:</strong> UA00 0000 0000 0000 0000 0000 0000</p>
-                        <p><strong>ЄДРПОУ:</strong> 12345678</p>
-                        <p><strong>Призначення:</strong> Благодійна пожертва</p>
+                <div class="bank-details text-left">
+                    <h3 class="font-bold mb-2">🏦 Реквізити (для ручного переказу):</h3>
+                    <div class="space-y-1 text-[0.8rem]">
+                        <p><strong>Банк:</strong> АТ КБ "ПРИВАТБАНК"</p>
+                        <p><strong>IBAN:</strong> UA133052990000026005005515996 </p>
+                        <p><strong>ЄДРПОУ:</strong> 23803925 </p>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Вікно перенаправлення -->
+    <div id="successModal">
+        <div class="modal-content">
+            <div class="text-4xl mb-4">⛪</div>
+            <h2 class="text-xl font-bold text-[#20128C] mb-2">Дякуємо за намірення!</h2>
+            <p class="text-sm text-gray-600 mb-6">Зараз ви будете перенаправлені на сторінку банку для здійснення пожертви.</p>
+            <div class="animate-spin h-8 w-8 border-4 border-[#20128C] border-t-transparent rounded-full mx-auto"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('liturgyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Показуємо вікно успіху
+            document.getElementById('successModal').style.display = 'flex';
+            
+            // Тут ви вставляєте ваше посилання на оплату (Приват24, LiqPay тощо)
+            const paymentUrl = "https://privatbank.ua"; 
+            
+            // Через 2 секунди перенаправляємо користувача
+            setTimeout(() => {
+                window.location.href = paymentUrl;
+            }, 2000);
+        });
+    </script>
 
 </body>
 </html>
